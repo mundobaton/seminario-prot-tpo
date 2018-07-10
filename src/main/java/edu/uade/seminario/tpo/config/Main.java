@@ -30,7 +30,7 @@ public class Main implements SparkApplication {
     }
 
     private void initRoutes() {
-        get("/ping", (req, res) -> "pong", responseTransformer);
+        get("/ping", "application/json", (req, res) -> "pong", responseTransformer);
     }
 
     public static void main(String[] args) {
