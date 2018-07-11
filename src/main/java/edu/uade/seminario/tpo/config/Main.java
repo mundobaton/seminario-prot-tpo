@@ -2,6 +2,7 @@ package edu.uade.seminario.tpo.config;
 
 import com.google.inject.Guice;
 import edu.uade.seminario.tpo.config.injectors.UtilsModule;
+import edu.uade.seminario.tpo.controller.SistemaIndicaciones;
 import edu.uade.seminario.tpo.util.JsonTransformer;
 import spark.ResponseTransformer;
 import spark.servlet.SparkApplication;
@@ -11,6 +12,7 @@ import static spark.Spark.*;
 public class Main implements SparkApplication {
 
     private ResponseTransformer responseTransformer;
+    private SistemaIndicaciones sistemaIndicaciones;
 
     @Override
     public void init() {
@@ -26,7 +28,7 @@ public class Main implements SparkApplication {
     }
 
     private void configure() {
-        port(Config.PORT);
+        port(8080);
     }
 
     private void initRoutes() {
@@ -39,6 +41,7 @@ public class Main implements SparkApplication {
 
     private void loadDependencies() {
         responseTransformer = new JsonTransformer();
+        sistemaIndicaciones = new SistemaIndicaciones();
     }
 
     private void initModules() {
