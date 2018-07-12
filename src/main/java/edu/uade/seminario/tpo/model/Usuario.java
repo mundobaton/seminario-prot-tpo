@@ -2,6 +2,7 @@ package edu.uade.seminario.tpo.model;
 
 public class Usuario {
 
+    private Long id;
     private String email;
     private String password;
     private String nombre;
@@ -9,6 +10,18 @@ public class Usuario {
     private Rol rol;
     private char estado;
     private Long dni;
+
+    public Usuario() {
+        estado = 'I';
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -64,5 +77,9 @@ public class Usuario {
 
     public void setDni(Long dni) {
         this.dni = dni;
+    }
+
+    public boolean esActivo() {
+        return estado == 'A';
     }
 }

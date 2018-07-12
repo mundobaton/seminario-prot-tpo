@@ -5,11 +5,20 @@ import java.util.List;
 
 public class ItemIndicacion {
 
+    private Long id;
     private Medicamento medicamento;
     private int cantidad;
     private double frecuencia;
     private List<Dosis> dosis;
     private Date fechaRecepcion;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Medicamento getMedicamento() {
         return medicamento;

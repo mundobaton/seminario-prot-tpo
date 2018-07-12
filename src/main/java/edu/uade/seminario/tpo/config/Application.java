@@ -127,7 +127,7 @@ public abstract class Application extends AbstractModule implements SparkApplica
         before((request, response) -> putRequestId());
         after((request, response) -> MDC.clear());
 
-        path("/sancarlos", this);
+        path("/sanlucas", this);
 
     }
 

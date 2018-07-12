@@ -4,11 +4,20 @@ import java.util.Date;
 
 public class Dosis {
 
+    private Long id;
     private Date fechaAplicacionPrevista;
     private Date fechaAplicacionEfectiva;
     private boolean aplicada;
     private int cantidad;
     private Usuario enfermero;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Date getFechaAplicacionPrevista() {
         return fechaAplicacionPrevista;

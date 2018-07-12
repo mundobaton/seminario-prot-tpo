@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Paciente {
 
+    private Long id;
     private String dni;
     private String nombre;
     private String apellido;
@@ -11,6 +12,14 @@ public class Paciente {
     private boolean internado;
     private Date fechaNacimiento;
     private Long numAfiliado;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getDni() {
         return dni;
