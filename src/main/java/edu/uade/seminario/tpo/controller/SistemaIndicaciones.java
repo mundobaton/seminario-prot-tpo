@@ -30,6 +30,7 @@ public class SistemaIndicaciones {
             return "La dirección de correo es requerida";
         }
         if (password == null || password.isEmpty()) {
+            response.status(HttpStatus.BAD_REQUEST_400);
             return "La contraseña es requerida";
         }
         try {
