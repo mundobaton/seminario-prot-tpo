@@ -1,6 +1,7 @@
 package edu.uade.seminario.tpo.config;
 
 import com.google.inject.Guice;
+import edu.uade.seminario.tpo.config.injectors.DatabaseModule;
 import edu.uade.seminario.tpo.config.injectors.UtilsModule;
 import edu.uade.seminario.tpo.controller.SistemaIndicaciones;
 import edu.uade.seminario.tpo.util.JsonTransformer;
@@ -46,6 +47,7 @@ public class Main implements SparkApplication {
 
     private void initModules() {
         Config.addInjector(Config.APP, Guice.createInjector(
+                new DatabaseModule(),
                 new UtilsModule()
         ));
     }
