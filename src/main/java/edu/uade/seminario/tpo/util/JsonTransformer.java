@@ -2,17 +2,17 @@ package edu.uade.seminario.tpo.util;
 
 import com.google.gson.Gson;
 import edu.uade.seminario.tpo.config.Config;
-import org.hibernate.SessionFactory;
 import spark.ResponseTransformer;
+
+import javax.inject.Inject;
 
 public class JsonTransformer implements ResponseTransformer {
 
-    private Gson gson = Config.getInjector(Config.APP).getInstance(Gson.class);
-    private SessionFactory sessionFactory = Config.getInjector(Config.APP).getInstance(SessionFactory.class);
+    @Inject
+    private Gson gson;
 
     @Override
     public String render(Object model) throws Exception {
-        System.out.print(sessionFactory == null);
         return gson.toJson(model);
     }
 }
