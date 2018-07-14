@@ -76,6 +76,9 @@ public class Main extends Application {
             post("/:indicacionId/items", sistemaIndicaciones::agregarItemsIndicacion, responseTransformer);
             put("/:indicacionId", sistemaIndicaciones::finalizarCargaItems, responseTransformer);
             get("/search", sistemaIndicaciones::buscarIndicacionesPorEstado, responseTransformer);
+            post("/:indicacionId", sistemaIndicaciones::modificarIndicacionRechazada, responseTransformer);
+            get("/:indicacionId", sistemaIndicaciones::getIndicacion, responseTransformer);
+            post("/:indicacionId/validate", sistemaIndicaciones::validarIndicacion, responseTransformer);
         });
     }
 

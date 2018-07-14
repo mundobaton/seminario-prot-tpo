@@ -17,4 +17,10 @@ public interface IndicacionService {
 
     List<Indicacion> buscarPorEstado(EstadoIndicacion estado);
 
+    Indicacion modificarRechazada(Long indicacionId) throws BusinessException;
+
+    Indicacion findIndicacion(Long indicacionId) throws BusinessException;
+
+    void validarIndicacion(Long indicacionId, String email) throws BusinessException;
+
 }

@@ -127,4 +127,27 @@ public class Indicacion {
         this.estado = EstadoIndicacion.PENDIENTE;
         this.fechaCreacion = new Date();
     }
+
+    public static Indicacion clone(Indicacion indicacion) {
+        Indicacion other = new Indicacion(indicacion.getPaciente(), indicacion.getDiagnostico());
+        other.setFechaCreacion(indicacion.getFechaCreacion());
+        other.setMedico(indicacion.getMedico());
+        other.setObservaciones(indicacion.getCodigoIndicacion().toString());
+        other.setFarmaceutico(indicacion.getFarmaceutico());
+        other.setFechaValidacion(indicacion.getFechaValidacion());
+        other.setFechaRecepcion(indicacion.getFechaRecepcion());
+        other.setEnfermero(indicacion.getEnfermero());
+
+        return other;
+    }
+
+    public void archivar() {
+        this.estado = EstadoIndicacion.ARCHIVADO;
+    }
+
+    public void validar(Usuario farmaceutico) {
+        this.farmaceutico = farmaceutico;
+        this.fechaValidacion = new Date();
+        this.estado = EstadoIndicacion.VALIDADO;
+    }
 }

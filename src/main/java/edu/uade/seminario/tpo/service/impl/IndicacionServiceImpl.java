@@ -46,10 +46,7 @@ public class IndicacionServiceImpl implements IndicacionService {
 
     @Override
     public void agregarItems(Long indicacionId, List<ItemIndicacionDTO> items) throws BusinessException {
-        Indicacion indicacion = indicacionDao.findById(indicacionId);
-        if (indicacion == null) {
-            throw new BusinessException("La indicacion con id '" + indicacionId.toString() + "' no existe", HttpStatus.NOT_FOUND_404);
-        }
+        Indicacion indicacion = this.findIndicacion(indicacionId);
         List<ItemIndicacion> itemIndicaciones = new ArrayList<>();
         for (ItemIndicacionDTO item : items) {
             Medicamento medicamento = medicamentoDao.findById(item.getMedicamentoId());
@@ -65,10 +62,7 @@ public class IndicacionServiceImpl implements IndicacionService {
 
     @Override
     public void finalizarCargaItems(Long indicacionId, String email) throws BusinessException {
-        Indicacion indicacion = indicacionDao.findById(indicacionId);
-        if (indicacion == null) {
-            throw new BusinessException("La indicacion con id '" + indicacionId.toString() + "' no existe", HttpStatus.NOT_FOUND_404);
-        }
+        Indicacion indicacion = this.findIndicacion(indicacionId);
         Usuario medico = usuarioDao.findByEmailAndRole(email, Rol.MEDICO);
         if (medico == null) {
             throw new BusinessException("No se encontró el medico con email '" + email + "'", HttpStatus.NOT_FOUND_404);
@@ -80,5 +74,41 @@ public class IndicacionServiceImpl implements IndicacionService {
     @Override
     public List<Indicacion> buscarPorEstado(EstadoIndicacion estado) {
         return indicacionDao.findByEstado(estado);
+    }
+
+    @Override
+    public Indicacion modificarRechazada(Long indicacionId) throws BusinessException {
+        Indicacion indicacion = this.findIndicacion(indicacionId);
+        if (indicacion.getEstado() != EstadoIndicacion.RECHAZADO) {
+            throw new BusinessException("La indicacion no se encuentra en estado 'RECHAZADO'", HttpStatus.BAD_REQUEST_400);
+        }
+
+        Indicacion nuevaIndicacion = Indicacion.clone(indicacion);
+        nuevaIndicacion = indicacionDao.save(nuevaIndicacion);
+
+        indicacion.archivar();
+        indicacionDao.save(indicacion);
+
+        return nuevaIndicacion;
+    }
+
+    @Override
+    public Indicacion findIndicacion(Long indicacionId) throws BusinessException {
+        Indicacion indicacion = indicacionDao.findById(indicacionId);
+        if (indicacion == null) {
+            throw new BusinessException("La indicacion con id '" + indicacionId.toString() + "' no existe", HttpStatus.NOT_FOUND_404);
+        }
+        return indicacion;
+    }
+
+    @Override
+    public void validarIndicacion(Long indicacionId, String email) throws BusinessException {
+        Indicacion indicacion = this.findIndicacion(indicacionId);
+        Usuario farmaceutico = usuarioDao.findByEmailAndRole(email, Rol.FARMACEUTICO);
+        if (farmaceutico == null) {
+            throw new BusinessException("No se encontró el farmaceutico con email '" + email + "'", HttpStatus.NOT_FOUND_404);
+        }
+        indicacion.validar(farmaceutico);
+        indicacionDao.save(indicacion);
     }
 }
