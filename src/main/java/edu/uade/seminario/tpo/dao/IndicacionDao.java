@@ -13,4 +13,6 @@ public interface IndicacionDao {
 
     List<Indicacion> findByEstado(EstadoIndicacion estadoIndicacion);
 
+    List<Indicacion> findByDniPaciente(String dniPaciente);
+
 }

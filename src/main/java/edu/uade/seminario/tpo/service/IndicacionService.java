@@ -27,4 +27,6 @@ public interface IndicacionService {
 
     void aceptarIndicacion(Long indicacionId, String email) throws BusinessException;
 
+    List<Indicacion> buscarPorPaciente(String dni);
+
 }

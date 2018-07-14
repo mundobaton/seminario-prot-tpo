@@ -8,10 +8,12 @@ import com.google.inject.Provides;
 import edu.uade.seminario.tpo.controller.SistemaIndicaciones;
 import edu.uade.seminario.tpo.controller.SistemaPacientes;
 import edu.uade.seminario.tpo.controller.filter.ContentTypeFilter;
+import edu.uade.seminario.tpo.dao.DosisDao;
 import edu.uade.seminario.tpo.dao.IndicacionDao;
 import edu.uade.seminario.tpo.dao.MedicamentoDao;
 import edu.uade.seminario.tpo.dao.PacienteDao;
 import edu.uade.seminario.tpo.dao.UsuarioDao;
+import edu.uade.seminario.tpo.dao.impl.DosisDaoImpl;
 import edu.uade.seminario.tpo.dao.impl.IndicacionDaoImpl;
 import edu.uade.seminario.tpo.dao.impl.MedicamentoDaoImpl;
 import edu.uade.seminario.tpo.dao.impl.PacienteDaoImpl;
@@ -22,11 +24,14 @@ import edu.uade.seminario.tpo.entity.ItemIndicacionEntity;
 import edu.uade.seminario.tpo.entity.MedicamentoEntity;
 import edu.uade.seminario.tpo.entity.PacienteEntity;
 import edu.uade.seminario.tpo.entity.UsuarioEntity;
+import edu.uade.seminario.tpo.model.Dosis;
 import edu.uade.seminario.tpo.model.Indicacion;
 import edu.uade.seminario.tpo.model.ItemIndicacion;
+import edu.uade.seminario.tpo.service.DosisService;
 import edu.uade.seminario.tpo.service.IndicacionService;
 import edu.uade.seminario.tpo.service.PacienteService;
 import edu.uade.seminario.tpo.service.UsuarioService;
+import edu.uade.seminario.tpo.service.impl.DosisServiceImpl;
 import edu.uade.seminario.tpo.service.impl.IndicacionServiceImpl;
 import edu.uade.seminario.tpo.service.impl.PacienteServiceImpl;
 import edu.uade.seminario.tpo.service.impl.UsuarioServiceImpl;
@@ -68,6 +73,7 @@ public class Main extends Application {
         });
 
         path("/pacientes", () -> {
+            get("/:dniPaciente/dosis", sistemaPacientes::getDosis, responseTransformer);
             get("", sistemaPacientes::getPacientes, responseTransformer);
         });
 
@@ -82,6 +88,10 @@ public class Main extends Application {
             post("/:indicacionId/send", sistemaIndicaciones::enviarIndicacion, responseTransformer);
             post("/:indicacionId/accept", sistemaIndicaciones::aceptarIndicacion, responseTransformer);
         });
+
+        path("/dosis", () -> {
+            post("/:dosisId", sistemaPacientes::aplicarDosisPaciente, responseTransformer);
+        });
     }
 
     @Override
@@ -93,6 +103,8 @@ public class Main extends Application {
         bind(IndicacionService.class).to(IndicacionServiceImpl.class);
         bind(IndicacionDao.class).to(IndicacionDaoImpl.class);
         bind(MedicamentoDao.class).to(MedicamentoDaoImpl.class);
+        bind(DosisService.class).to(DosisServiceImpl.class);
+        bind(DosisDao.class).to(DosisDaoImpl.class);
     }
 
     @Provides
@@ -114,7 +126,9 @@ public class Main extends Application {
         return new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
             @Override
             public boolean shouldSkipField(FieldAttributes f) {
-                return f.getName().equals("indicacion") && f.getDeclaringClass().equals(ItemIndicacion.class);
+                return (f.getName().equals("indicacion") && f.getDeclaringClass().equals(ItemIndicacion.class) ||
+                        (f.getName().equals("dosis") && f.getDeclaringClass().equals(ItemIndicacion.class))
+                );
             }
 
             @Override

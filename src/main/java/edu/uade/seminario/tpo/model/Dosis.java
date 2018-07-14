@@ -21,6 +21,12 @@ public class Dosis {
         this.aplicada = false;
     }
 
+    public void aplicar(Usuario enfermero) {
+        this.enfermero = enfermero;
+        this.fechaAplicacionEfectiva = new Date();
+        this.aplicada = true;
+    }
+
     public Long getId() {
         return id;
     }

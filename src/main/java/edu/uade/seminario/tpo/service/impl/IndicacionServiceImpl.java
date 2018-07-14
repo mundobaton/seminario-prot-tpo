@@ -136,4 +136,9 @@ public class IndicacionServiceImpl implements IndicacionService {
         indicacion.recibir(enfermero);
         indicacionDao.save(indicacion);
     }
+
+    @Override
+    public List<Indicacion> buscarPorPaciente(String dni) {
+        return indicacionDao.findByDniPaciente(dni);
+    }
 }

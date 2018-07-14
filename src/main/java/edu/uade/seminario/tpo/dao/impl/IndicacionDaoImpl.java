@@ -53,4 +53,22 @@ public class IndicacionDaoImpl extends AbstractDao<IndicacionEntity> implements 
         }
         return new ArrayList<>();
     }
+
+    @Override
+    public List<Indicacion> findByDniPaciente(String dniPaciente) {
+        String query = "select i from IndicacionEntity i inner join i.paciente as p where p.dni = :dniPaciente";
+        try (Session session = getSession()) {
+            Query<IndicacionEntity> q = session.createQuery(query);
+            q.setParameter("dniPaciente", dniPaciente);
+            List<IndicacionEntity> result = q.getResultList();
+            if (result != null && !result.isEmpty()) {
+                List<Indicacion> indicaciones = new ArrayList<>();
+                for (IndicacionEntity ie : result) {
+                    indicaciones.add(mapper.map(ie, Indicacion.class));
+                }
+                return indicaciones;
+            }
+        }
+        return new ArrayList<>();
+    }
 }
