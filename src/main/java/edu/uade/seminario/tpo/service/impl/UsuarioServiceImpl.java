@@ -26,7 +26,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new BusinessException("El usuario está inactivo", HttpStatus.FORBIDDEN_403);
         }
 
-        if (!u.getPassword().equals(password)) {
+        if (!u.esPasswordValido(password)) {
             throw new BusinessException("El usuario con email '" + email + "' no existe o la contraseña es incorrecta", HttpStatus.FORBIDDEN_403);
         }
         return u;

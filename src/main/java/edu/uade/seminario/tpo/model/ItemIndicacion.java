@@ -11,6 +11,18 @@ public class ItemIndicacion {
     private double frecuencia;
     private List<Dosis> dosis;
     private Date fechaRecepcion;
+    private Indicacion indicacion;
+
+    public ItemIndicacion() {
+
+    }
+
+    public ItemIndicacion(Medicamento medicamento, int cantidad, double frecuencia, Indicacion indicacion) {
+        this.medicamento = medicamento;
+        this.cantidad = cantidad;
+        this.frecuencia = frecuencia;
+        this.indicacion = indicacion;
+    }
 
     public Long getId() {
         return id;
@@ -58,5 +70,13 @@ public class ItemIndicacion {
 
     public void setFechaRecepcion(Date fechaRecepcion) {
         this.fechaRecepcion = fechaRecepcion;
+    }
+
+    public Indicacion getIndicacion() {
+        return indicacion;
+    }
+
+    public void setIndicacion(Indicacion indicacion) {
+        this.indicacion = indicacion;
     }
 }

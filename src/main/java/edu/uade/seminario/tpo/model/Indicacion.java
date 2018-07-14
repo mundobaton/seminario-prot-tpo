@@ -18,6 +18,14 @@ public class Indicacion {
     private Date fechaRecepcion;
     private Usuario enfermero;
 
+    public Indicacion() {
+    }
+
+    public Indicacion(Paciente paciente, String diagnostico) {
+        this.paciente = paciente;
+        this.diagnostico = diagnostico;
+    }
+
     public Long getCodigoIndicacion() {
         return codigoIndicacion;
     }

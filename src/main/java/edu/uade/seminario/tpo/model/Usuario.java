@@ -82,4 +82,8 @@ public class Usuario {
     public boolean esActivo() {
         return estado == 'A';
     }
+
+    public boolean esPasswordValido(String password) {
+        return this.password.equals(password);
+    }
 }

@@ -41,7 +41,7 @@ public class IndicacionEntity implements Serializable {
     private EstadoIndicacion estado;
     @Column(name = "observaciones")
     private String observaciones;
-    @OneToMany(mappedBy = "indicacion")
+    @OneToMany(mappedBy = "indicacion", cascade = CascadeType.ALL)
     private List<ItemIndicacionEntity> items;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "farmaceutico_id")

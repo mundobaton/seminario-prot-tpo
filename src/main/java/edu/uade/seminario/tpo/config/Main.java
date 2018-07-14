@@ -3,8 +3,15 @@ package edu.uade.seminario.tpo.config;
 import com.google.gson.Gson;
 import com.google.inject.Provides;
 import edu.uade.seminario.tpo.controller.SistemaIndicaciones;
+import edu.uade.seminario.tpo.controller.SistemaPacientes;
 import edu.uade.seminario.tpo.controller.filter.ContentTypeFilter;
+import edu.uade.seminario.tpo.dao.IndicacionDao;
+import edu.uade.seminario.tpo.dao.MedicamentoDao;
+import edu.uade.seminario.tpo.dao.PacienteDao;
 import edu.uade.seminario.tpo.dao.UsuarioDao;
+import edu.uade.seminario.tpo.dao.impl.IndicacionDaoImpl;
+import edu.uade.seminario.tpo.dao.impl.MedicamentoDaoImpl;
+import edu.uade.seminario.tpo.dao.impl.PacienteDaoImpl;
 import edu.uade.seminario.tpo.dao.impl.UsuarioDaoImpl;
 import edu.uade.seminario.tpo.entity.DosisEntity;
 import edu.uade.seminario.tpo.entity.IndicacionEntity;
@@ -12,17 +19,18 @@ import edu.uade.seminario.tpo.entity.ItemIndicacionEntity;
 import edu.uade.seminario.tpo.entity.MedicamentoEntity;
 import edu.uade.seminario.tpo.entity.PacienteEntity;
 import edu.uade.seminario.tpo.entity.UsuarioEntity;
+import edu.uade.seminario.tpo.service.IndicacionService;
+import edu.uade.seminario.tpo.service.PacienteService;
 import edu.uade.seminario.tpo.service.UsuarioService;
+import edu.uade.seminario.tpo.service.impl.IndicacionServiceImpl;
+import edu.uade.seminario.tpo.service.impl.PacienteServiceImpl;
 import edu.uade.seminario.tpo.service.impl.UsuarioServiceImpl;
 import edu.uade.seminario.tpo.util.JsonTransformer;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import spark.ResponseTransformer;
-import spark.Spark;
 
 import javax.inject.Singleton;
 
@@ -30,14 +38,15 @@ import static spark.Spark.*;
 
 public class Main extends Application {
 
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private SistemaIndicaciones sistemaIndicaciones;
+    private SistemaPacientes sistemaPacientes;
     private ResponseTransformer responseTransformer;
     private ContentTypeFilter contentTypeFilter;
 
     public Main() {
         super();
         this.sistemaIndicaciones = Application.getInstance(SistemaIndicaciones.class);
+        this.sistemaPacientes = Application.getInstance(SistemaPacientes.class);
         this.responseTransformer = Application.getInstance(JsonTransformer.class);
         this.contentTypeFilter = Application.getInstance(ContentTypeFilter.class);
     }
@@ -49,8 +58,17 @@ public class Main extends Application {
     @Override
     public void addRoutes() {
         after("/*", contentTypeFilter);
-        path("/usuario", () -> {
-            post("/login", sistemaIndicaciones::userLogin, responseTransformer);
+        path("/usuarios", () -> {
+            post("/login", sistemaIndicaciones::loginUsuario, responseTransformer);
+        });
+
+        path("/pacientes", () -> {
+            get("", sistemaPacientes::getPacientes, responseTransformer);
+        });
+
+        path("/indicaciones", () -> {
+            put("", sistemaIndicaciones::generarIndicacion, responseTransformer);
+            post("/:indicacionId/items", sistemaIndicaciones::agregarItemsIndicacion, responseTransformer);
         });
     }
 
@@ -58,6 +76,11 @@ public class Main extends Application {
     protected void configure() {
         bind(UsuarioService.class).to(UsuarioServiceImpl.class);
         bind(UsuarioDao.class).to(UsuarioDaoImpl.class);
+        bind(PacienteService.class).to(PacienteServiceImpl.class);
+        bind(PacienteDao.class).to(PacienteDaoImpl.class);
+        bind(IndicacionService.class).to(IndicacionServiceImpl.class);
+        bind(IndicacionDao.class).to(IndicacionDaoImpl.class);
+        bind(MedicamentoDao.class).to(MedicamentoDaoImpl.class);
     }
 
     @Provides
