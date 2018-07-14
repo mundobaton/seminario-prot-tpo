@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import edu.uade.seminario.tpo.dto.ItemIndicacionDTO;
 import edu.uade.seminario.tpo.exception.BusinessException;
+import edu.uade.seminario.tpo.model.EstadoIndicacion;
 import edu.uade.seminario.tpo.model.Indicacion;
 import edu.uade.seminario.tpo.model.Usuario;
 import edu.uade.seminario.tpo.service.IndicacionService;
@@ -98,5 +99,37 @@ public class SistemaIndicaciones {
             response.status(be.getStatus());
             return be.getMessage();
         }
+    }
+
+    public Object finalizarCargaItems(Request request, Response response) {
+        Long indicacionId = Long.parseLong(request.params("indicacionId"));
+        String email = request.queryParams("email");
+        if (email == null || email.isEmpty()) {
+            response.status(HttpStatus.BAD_REQUEST_400);
+            return "El parámetro email es requerido";
+        }
+        try {
+            indicacionService.finalizarCargaItems(indicacionId, email);
+            return "";
+        } catch (BusinessException be) {
+            response.status(be.getStatus());
+            return be.getMessage();
+        }
+    }
+
+    public Object buscarIndicacionesPorEstado(Request request, Response response) {
+        String estado = request.queryParams("estado");
+        if (estado == null || estado.isEmpty()) {
+            response.status(HttpStatus.BAD_REQUEST_400);
+            return "El parámetro estado es requerido";
+        }
+        EstadoIndicacion estadoIndicacion = null;
+        try {
+            estadoIndicacion = EstadoIndicacion.getByName(estado);
+        } catch (IllegalArgumentException e) {
+            response.status(HttpStatus.BAD_REQUEST_400);
+            return "El estado es inválido";
+        }
+        return indicacionService.buscarPorEstado(estadoIndicacion);
     }
 }

@@ -1,6 +1,9 @@
 package edu.uade.seminario.tpo.config;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.inject.Provides;
 import edu.uade.seminario.tpo.controller.SistemaIndicaciones;
 import edu.uade.seminario.tpo.controller.SistemaPacientes;
@@ -19,6 +22,8 @@ import edu.uade.seminario.tpo.entity.ItemIndicacionEntity;
 import edu.uade.seminario.tpo.entity.MedicamentoEntity;
 import edu.uade.seminario.tpo.entity.PacienteEntity;
 import edu.uade.seminario.tpo.entity.UsuarioEntity;
+import edu.uade.seminario.tpo.model.Indicacion;
+import edu.uade.seminario.tpo.model.ItemIndicacion;
 import edu.uade.seminario.tpo.service.IndicacionService;
 import edu.uade.seminario.tpo.service.PacienteService;
 import edu.uade.seminario.tpo.service.UsuarioService;
@@ -69,6 +74,8 @@ public class Main extends Application {
         path("/indicaciones", () -> {
             put("", sistemaIndicaciones::generarIndicacion, responseTransformer);
             post("/:indicacionId/items", sistemaIndicaciones::agregarItemsIndicacion, responseTransformer);
+            put("/:indicacionId", sistemaIndicaciones::finalizarCargaItems, responseTransformer);
+            get("/search", sistemaIndicaciones::buscarIndicacionesPorEstado, responseTransformer);
         });
     }
 
@@ -99,7 +106,17 @@ public class Main extends Application {
 
     @Provides
     public Gson provideGson() {
-        return new Gson();
+        return new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
+            @Override
+            public boolean shouldSkipField(FieldAttributes f) {
+                return f.getName().equals("indicacion") && f.getDeclaringClass().equals(ItemIndicacion.class);
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        }).create();
     }
 
     @Provides

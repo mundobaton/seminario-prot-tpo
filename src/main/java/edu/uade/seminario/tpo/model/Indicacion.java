@@ -121,4 +121,10 @@ public class Indicacion {
     public void setEnfermero(Usuario enfermero) {
         this.enfermero = enfermero;
     }
+
+    public void finalizarCargaItems(Usuario medico) {
+        this.medico = medico;
+        this.estado = EstadoIndicacion.PENDIENTE;
+        this.fechaCreacion = new Date();
+    }
 }
