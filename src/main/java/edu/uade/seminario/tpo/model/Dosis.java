@@ -8,8 +8,18 @@ public class Dosis {
     private Date fechaAplicacionPrevista;
     private Date fechaAplicacionEfectiva;
     private boolean aplicada;
-    private int cantidad;
     private Usuario enfermero;
+    private ItemIndicacion itemIndicacion;
+
+    public Dosis() {
+
+    }
+
+    public Dosis(Date fechaPrevista, ItemIndicacion itemIndicacion) {
+        this.fechaAplicacionPrevista = fechaPrevista;
+        this.itemIndicacion = itemIndicacion;
+        this.aplicada = false;
+    }
 
     public Long getId() {
         return id;
@@ -43,19 +53,19 @@ public class Dosis {
         this.aplicada = aplicada;
     }
 
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
     public Usuario getEnfermero() {
         return enfermero;
     }
 
     public void setEnfermero(Usuario enfermero) {
         this.enfermero = enfermero;
+    }
+
+    public ItemIndicacion getItemIndicacion() {
+        return itemIndicacion;
+    }
+
+    public void setItemIndicacion(ItemIndicacion itemIndicacion) {
+        this.itemIndicacion = itemIndicacion;
     }
 }

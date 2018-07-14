@@ -1,5 +1,7 @@
 package edu.uade.seminario.tpo.model;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +10,7 @@ public class ItemIndicacion {
     private Long id;
     private Medicamento medicamento;
     private int cantidad;
-    private double frecuencia;
+    private double frecuencia; //expresado en horas, no puede superar 24
     private List<Dosis> dosis;
     private Date fechaRecepcion;
     private Indicacion indicacion;
@@ -78,5 +80,28 @@ public class ItemIndicacion {
 
     public void setIndicacion(Indicacion indicacion) {
         this.indicacion = indicacion;
+    }
+
+    public boolean contieneStock() {
+        return obtenerCantidadTotal() <= medicamento.getStock();
+    }
+
+    private int obtenerCantidadTotal() {
+        return (int) ((1 / frecuencia) * 24 * cantidad);
+    }
+
+    public void descontarStockMedicamento() {
+        medicamento.setStock(medicamento.getStock() - obtenerCantidadTotal());
+    }
+
+    public void generarDosis() {
+        this.dosis = new ArrayList<>();
+        Calendar now = Calendar.getInstance();
+        for (int i = 0; i < obtenerCantidadTotal(); i++) {
+            Dosis dosis = new Dosis(now.getTime(), this);
+            this.dosis.add(dosis);
+
+            now.add(Calendar.MINUTE, (int) frecuencia * 60);
+        }
     }
 }

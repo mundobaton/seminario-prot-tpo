@@ -1,6 +1,7 @@
 package edu.uade.seminario.tpo.model;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class Indicacion {
@@ -149,5 +150,36 @@ public class Indicacion {
         this.farmaceutico = farmaceutico;
         this.fechaValidacion = new Date();
         this.estado = EstadoIndicacion.VALIDADO;
+    }
+
+    public boolean completaStock() {
+        boolean result = true;
+        Iterator<ItemIndicacion> it = items.iterator();
+        while (result && it.hasNext()) {
+            ItemIndicacion itemIndicacion = it.next();
+            result = itemIndicacion.contieneStock();
+        }
+        return result;
+    }
+
+    public void rechazar(String motivo) {
+        this.observaciones = observaciones + "\n" + motivo;
+        this.estado = EstadoIndicacion.RECHAZADO;
+    }
+
+    public void enviar() {
+        for (ItemIndicacion item : items) {
+            item.descontarStockMedicamento();
+        }
+        this.estado = EstadoIndicacion.ENVIADO;
+    }
+
+    public void recibir(Usuario enfermero) {
+        this.enfermero = enfermero;
+        this.fechaRecepcion = new Date();
+        for (ItemIndicacion item : items) {
+            item.generarDosis();
+        }
+        this.estado = EstadoIndicacion.RECIBIDO;
     }
 }

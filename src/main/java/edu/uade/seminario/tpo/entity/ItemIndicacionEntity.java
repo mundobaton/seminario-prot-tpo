@@ -30,12 +30,12 @@ public class ItemIndicacionEntity implements Serializable {
     private int cantidad;
     @Column(name = "frecuencia")
     private double frecuencia;
-    @OneToMany(mappedBy = "itemIndicacion")
+    @OneToMany(mappedBy = "itemIndicacion", cascade = CascadeType.ALL)
     private List<DosisEntity> dosis;
     @Column(name = "fecha_recepcion")
     private Date fechaRecepcion;
     @ManyToOne
-    @JoinColumn(name="indicacion_id")
+    @JoinColumn(name = "indicacion_id")
     private IndicacionEntity indicacion;
 
     public Long getId() {

@@ -171,4 +171,33 @@ public class SistemaIndicaciones {
             return be.getMessage();
         }
     }
+
+    public Object enviarIndicacion(Request request, Response response) {
+        Long indicacionId = Long.parseLong(request.params("indicacionId"));
+        try {
+            indicacionService.enviarIndicacion(indicacionId);
+            return "";
+        } catch (BusinessException be) {
+            response.status(be.getStatus());
+            return be.getMessage();
+        }
+    }
+
+    public Object aceptarIndicacion(Request request, Response response) {
+        Long indicacionId = Long.parseLong(request.params("indicacionId"));
+        String email = request.queryParams("email");
+
+        if (email == null || email.isEmpty()) {
+            response.status(HttpStatus.BAD_REQUEST_400);
+            return "El parámetro email es requerido";
+        }
+
+        try {
+            indicacionService.aceptarIndicacion(indicacionId, email);
+            return "";
+        } catch (BusinessException be) {
+            response.status(be.getStatus());
+            return be.getMessage();
+        }
+    }
 }

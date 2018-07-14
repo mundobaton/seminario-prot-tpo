@@ -23,4 +23,8 @@ public interface IndicacionService {
 
     void validarIndicacion(Long indicacionId, String email) throws BusinessException;
 
+    void enviarIndicacion(Long indicacionId) throws BusinessException;
+
+    void aceptarIndicacion(Long indicacionId, String email) throws BusinessException;
+
 }

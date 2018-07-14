@@ -51,7 +51,10 @@ public class IndicacionServiceImpl implements IndicacionService {
         for (ItemIndicacionDTO item : items) {
             Medicamento medicamento = medicamentoDao.findById(item.getMedicamentoId());
             if (medicamento == null) {
-                throw new BusinessException("El medicamento con id '" + item.getMedicamentoId() + "' no existe");
+                throw new BusinessException("El medicamento con id '" + item.getMedicamentoId() + "' no existe", HttpStatus.NOT_FOUND_404);
+            }
+            if (item.getFrecuencia() > 24) {
+                throw new BusinessException("La frecuencia debe estar comprendida entre (0, 24]", HttpStatus.BAD_REQUEST_400);
             }
             ItemIndicacion ii = new ItemIndicacion(medicamento, item.getCantidad(), item.getFrecuencia(), indicacion);
             itemIndicaciones.add(ii);
@@ -109,6 +112,28 @@ public class IndicacionServiceImpl implements IndicacionService {
             throw new BusinessException("No se encontró el farmaceutico con email '" + email + "'", HttpStatus.NOT_FOUND_404);
         }
         indicacion.validar(farmaceutico);
+        indicacionDao.save(indicacion);
+    }
+
+    @Override
+    public void enviarIndicacion(Long indicacionId) throws BusinessException {
+        Indicacion indicacion = this.findIndicacion(indicacionId);
+        if (indicacion.completaStock()) {
+            indicacion.enviar();
+        } else {
+            indicacion.rechazar("Falta de stock");
+        }
+        indicacionDao.save(indicacion);
+    }
+
+    @Override
+    public void aceptarIndicacion(Long indicacionId, String email) throws BusinessException {
+        Indicacion indicacion = this.findIndicacion(indicacionId);
+        Usuario enfermero = usuarioDao.findByEmailAndRole(email, Rol.ENFERMERO);
+        if (enfermero == null) {
+            throw new BusinessException("No se encontró el enfermero con email '" + email + "'", HttpStatus.NOT_FOUND_404);
+        }
+        indicacion.recibir(enfermero);
         indicacionDao.save(indicacion);
     }
 }

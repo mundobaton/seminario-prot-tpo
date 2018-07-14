@@ -27,8 +27,6 @@ public class DosisEntity implements Serializable {
     private Date fechaAplicacionEfectiva;
     @Column(name = "aplicada")
     private boolean aplicada;
-    @Column(name = "cantidad")
-    private int cantidad;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "enfermero_id")
     private UsuarioEntity enfermero;
@@ -66,14 +64,6 @@ public class DosisEntity implements Serializable {
 
     public void setAplicada(boolean aplicada) {
         this.aplicada = aplicada;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
     }
 
     public UsuarioEntity getEnfermero() {

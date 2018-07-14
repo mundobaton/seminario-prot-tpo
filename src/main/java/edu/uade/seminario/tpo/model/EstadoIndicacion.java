@@ -8,7 +8,8 @@ public enum EstadoIndicacion {
     RECHAZADO,
     ARCHIVADO,
     VALIDADO,
-    ENVIADO;
+    ENVIADO,
+    RECIBIDO;
 
     public static EstadoIndicacion getByName(String name) {
         return valueOf(name.toUpperCase());

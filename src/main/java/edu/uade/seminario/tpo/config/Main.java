@@ -79,6 +79,8 @@ public class Main extends Application {
             post("/:indicacionId", sistemaIndicaciones::modificarIndicacionRechazada, responseTransformer);
             get("/:indicacionId", sistemaIndicaciones::getIndicacion, responseTransformer);
             post("/:indicacionId/validate", sistemaIndicaciones::validarIndicacion, responseTransformer);
+            post("/:indicacionId/send", sistemaIndicaciones::enviarIndicacion, responseTransformer);
+            post("/:indicacionId/accept", sistemaIndicaciones::aceptarIndicacion, responseTransformer);
         });
     }
 
