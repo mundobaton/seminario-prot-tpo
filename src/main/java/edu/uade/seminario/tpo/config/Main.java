@@ -24,8 +24,6 @@ import edu.uade.seminario.tpo.entity.ItemIndicacionEntity;
 import edu.uade.seminario.tpo.entity.MedicamentoEntity;
 import edu.uade.seminario.tpo.entity.PacienteEntity;
 import edu.uade.seminario.tpo.entity.UsuarioEntity;
-import edu.uade.seminario.tpo.model.Dosis;
-import edu.uade.seminario.tpo.model.Indicacion;
 import edu.uade.seminario.tpo.model.ItemIndicacion;
 import edu.uade.seminario.tpo.service.DosisService;
 import edu.uade.seminario.tpo.service.IndicacionService;
@@ -73,7 +71,7 @@ public class Main extends Application {
         });
 
         path("/pacientes", () -> {
-            get("/:dniPaciente/dosis", sistemaPacientes::getDosis, responseTransformer);
+            get("/:dniPaciente/dosis", sistemaPacientes::getDosisPaciente, responseTransformer);
             get("", sistemaPacientes::getPacientes, responseTransformer);
         });
 
@@ -87,10 +85,16 @@ public class Main extends Application {
             post("/:indicacionId/validate", sistemaIndicaciones::validarIndicacion, responseTransformer);
             post("/:indicacionId/send", sistemaIndicaciones::enviarIndicacion, responseTransformer);
             post("/:indicacionId/accept", sistemaIndicaciones::aceptarIndicacion, responseTransformer);
+            post("/:indicacionId/reject", sistemaIndicaciones::rechazarIndicacion, responseTransformer);
         });
 
         path("/dosis", () -> {
+            get("", sistemaPacientes::getDosis, responseTransformer);
             post("/:dosisId", sistemaPacientes::aplicarDosisPaciente, responseTransformer);
+        });
+
+        path("/medicamentos", () -> {
+            get("", sistemaIndicaciones::getMedicamentos, responseTransformer);
         });
     }
 

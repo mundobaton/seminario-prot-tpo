@@ -163,7 +163,7 @@ public class Indicacion {
     }
 
     public void rechazar(String motivo) {
-        this.observaciones = observaciones + "\n" + motivo;
+        this.observaciones = (observaciones == null ? "" : observaciones + "\n") + motivo;
         this.estado = EstadoIndicacion.RECHAZADO;
     }
 

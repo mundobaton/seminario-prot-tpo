@@ -11,6 +11,7 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.List;
 
 @Singleton
 public class DosisServiceImpl implements DosisService {
@@ -35,5 +36,10 @@ public class DosisServiceImpl implements DosisService {
         }
         dosis.aplicar(enfermero);
         dosisDao.save(dosis);
+    }
+
+    @Override
+    public List<Dosis> obtenerDosis() {
+        return dosisDao.findAll();
     }
 }

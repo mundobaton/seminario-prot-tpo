@@ -4,6 +4,7 @@ import edu.uade.seminario.tpo.dto.ItemIndicacionDTO;
 import edu.uade.seminario.tpo.exception.BusinessException;
 import edu.uade.seminario.tpo.model.EstadoIndicacion;
 import edu.uade.seminario.tpo.model.Indicacion;
+import edu.uade.seminario.tpo.model.Medicamento;
 
 import java.util.List;
 
@@ -28,5 +29,9 @@ public interface IndicacionService {
     void aceptarIndicacion(Long indicacionId, String email) throws BusinessException;
 
     List<Indicacion> buscarPorPaciente(String dni);
+
+    List<Medicamento> obtenerMedicamentos();
+
+    void rechazarIndicacion(Long indicacionId) throws BusinessException;
 
 }

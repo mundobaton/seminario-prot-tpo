@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
@@ -25,5 +26,22 @@ public class MedicamentoDaoImpl extends AbstractDao<MedicamentoEntity> implement
             }
         }
         return null;
+    }
+
+    @Override
+    public List<Medicamento> findAll() {
+        String query = "select m from MedicamentoEntity m";
+        try (Session session = getSession()) {
+            Query<MedicamentoEntity> q = session.createQuery(query);
+            List<MedicamentoEntity> result = q.getResultList();
+            if (result != null && !result.isEmpty()) {
+                List<Medicamento> medicamentos = new ArrayList<>();
+                for (MedicamentoEntity entity : result) {
+                    medicamentos.add(mapper.map(entity, Medicamento.class));
+                }
+                return medicamentos;
+            }
+        }
+        return new ArrayList();
     }
 }

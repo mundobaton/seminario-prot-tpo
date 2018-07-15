@@ -141,4 +141,16 @@ public class IndicacionServiceImpl implements IndicacionService {
     public List<Indicacion> buscarPorPaciente(String dni) {
         return indicacionDao.findByDniPaciente(dni);
     }
+
+    @Override
+    public List<Medicamento> obtenerMedicamentos() {
+        return medicamentoDao.findAll();
+    }
+
+    @Override
+    public void rechazarIndicacion(Long indicacionId) throws BusinessException {
+        Indicacion indicacion = this.findIndicacion(indicacionId);
+        indicacion.rechazar("Otro motivo");
+        indicacionDao.save(indicacion);
+    }
 }

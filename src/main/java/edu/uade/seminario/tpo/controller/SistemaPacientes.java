@@ -1,6 +1,7 @@
 package edu.uade.seminario.tpo.controller;
 
 import edu.uade.seminario.tpo.exception.BusinessException;
+import edu.uade.seminario.tpo.model.Dosis;
 import edu.uade.seminario.tpo.model.Paciente;
 import edu.uade.seminario.tpo.service.DosisService;
 import edu.uade.seminario.tpo.service.IndicacionService;
@@ -25,7 +26,7 @@ public class SistemaPacientes {
         return pacienteService.getPacientes();
     }
 
-    public Object getDosis(Request request, Response response) {
+    public Object getDosisPaciente(Request request, Response response) {
         String dniPaciente = request.params("dniPaciente");
         try {
             return pacienteService.buscarDosisPorPaciente(dniPaciente);
@@ -33,6 +34,10 @@ public class SistemaPacientes {
             response.status(be.getStatus());
             return be.getMessage();
         }
+    }
+
+    public List<Dosis> getDosis(Request request, Response response) {
+        return dosisService.obtenerDosis();
     }
 
     public Object aplicarDosisPaciente(Request request, Response response) {

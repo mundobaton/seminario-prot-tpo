@@ -8,6 +8,7 @@ import edu.uade.seminario.tpo.dto.ItemIndicacionDTO;
 import edu.uade.seminario.tpo.exception.BusinessException;
 import edu.uade.seminario.tpo.model.EstadoIndicacion;
 import edu.uade.seminario.tpo.model.Indicacion;
+import edu.uade.seminario.tpo.model.Medicamento;
 import edu.uade.seminario.tpo.model.Usuario;
 import edu.uade.seminario.tpo.service.IndicacionService;
 import edu.uade.seminario.tpo.service.UsuarioService;
@@ -199,5 +200,20 @@ public class SistemaIndicaciones {
             response.status(be.getStatus());
             return be.getMessage();
         }
+    }
+
+    public Object rechazarIndicacion(Request request, Response response) {
+        Long indicacionId = Long.parseLong(request.params("indicacionId"));
+        try {
+            indicacionService.rechazarIndicacion(indicacionId);
+            return "";
+        } catch (BusinessException be) {
+            response.status(be.getStatus());
+            return be.getMessage();
+        }
+    }
+
+    public List<Medicamento> getMedicamentos(Request request, Response response) {
+        return indicacionService.obtenerMedicamentos();
     }
 }
