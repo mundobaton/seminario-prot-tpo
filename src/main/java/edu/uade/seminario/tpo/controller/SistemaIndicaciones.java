@@ -220,7 +220,7 @@ public class SistemaIndicaciones {
         }
 
         try {
-            indicacionService.rechazarIndicacion(indicacionId, email);
+            indicacionService.rechazarIndicacion(indicacionId, email, motivo);
             return "";
         } catch (BusinessException be) {
             response.status(be.getStatus());
