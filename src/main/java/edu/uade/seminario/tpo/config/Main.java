@@ -65,6 +65,7 @@ public class Main extends Application {
 
     @Override
     public void addRoutes() {
+
         after("/*", contentTypeFilter);
         path("/usuarios", () -> {
             post("/login", sistemaIndicaciones::loginUsuario, responseTransformer);
