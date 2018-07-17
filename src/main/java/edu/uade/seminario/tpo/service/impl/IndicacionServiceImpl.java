@@ -121,7 +121,7 @@ public class IndicacionServiceImpl implements IndicacionService {
         if (indicacion.completaStock()) {
             indicacion.enviar();
         } else {
-            indicacion.rechazar("Falta de stock");
+            indicacion.rechazar("Falta de stock", null);
         }
         indicacionDao.save(indicacion);
     }
@@ -148,9 +148,13 @@ public class IndicacionServiceImpl implements IndicacionService {
     }
 
     @Override
-    public void rechazarIndicacion(Long indicacionId) throws BusinessException {
+    public void rechazarIndicacion(Long indicacionId, String email, String motivo) throws BusinessException {
         Indicacion indicacion = this.findIndicacion(indicacionId);
-        indicacion.rechazar("Otro motivo");
+        Usuario farmaceutico = usuarioDao.findByEmailAndRole(email, Rol.FARMACEUTICO);
+        if (farmaceutico == null) {
+            throw new BusinessException("No se encontró el farmaceutico con email '" + email + "'", HttpStatus.NOT_FOUND_404);
+        }
+        indicacion.rechazar(motivo, farmaceutico);
         indicacionDao.save(indicacion);
     }
 }

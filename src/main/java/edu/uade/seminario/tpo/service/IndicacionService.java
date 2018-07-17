@@ -32,6 +32,6 @@ public interface IndicacionService {
 
     List<Medicamento> obtenerMedicamentos();
 
-    void rechazarIndicacion(Long indicacionId) throws BusinessException;
+    void rechazarIndicacion(Long indicacionId, String email, String motivo) throws BusinessException;
 
 }

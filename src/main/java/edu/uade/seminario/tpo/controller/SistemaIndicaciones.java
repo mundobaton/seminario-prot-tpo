@@ -204,8 +204,23 @@ public class SistemaIndicaciones {
 
     public Object rechazarIndicacion(Request request, Response response) {
         Long indicacionId = Long.parseLong(request.params("indicacionId"));
+        String email = request.queryParams("email");
+
+        if (email == null || email.isEmpty()) {
+            response.status(HttpStatus.BAD_REQUEST_400);
+            return "El parámetro email es requerido";
+        }
+
+        JsonObject json = gson.fromJson(request.body(), JsonObject.class);
+        String motivo = json.get("motivo").getAsString();
+
+        if (motivo == null || motivo.isEmpty()) {
+            response.status(HttpStatus.BAD_REQUEST_400);
+            return "El motivo de rechazo es requerido";
+        }
+
         try {
-            indicacionService.rechazarIndicacion(indicacionId);
+            indicacionService.rechazarIndicacion(indicacionId, email);
             return "";
         } catch (BusinessException be) {
             response.status(be.getStatus());

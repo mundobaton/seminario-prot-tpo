@@ -162,8 +162,10 @@ public class Indicacion {
         return result;
     }
 
-    public void rechazar(String motivo) {
+    public void rechazar(String motivo, Usuario farmaceutico) {
+        this.farmaceutico = farmaceutico;
         this.observaciones = (observaciones == null ? "" : observaciones + "\n") + motivo;
+        this.fechaValidacion = new Date();
         this.estado = EstadoIndicacion.RECHAZADO;
     }
 

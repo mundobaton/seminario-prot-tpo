@@ -33,6 +33,9 @@ public class DosisEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name="item_indicacion_id")
     private ItemIndicacionEntity itemIndicacion;
+    @OneToOne
+    @JoinColumn(name = "paciente_id")
+    private PacienteEntity paciente;
 
     public Long getId() {
         return id;
@@ -80,5 +83,13 @@ public class DosisEntity implements Serializable {
 
     public void setItemIndicacion(ItemIndicacionEntity itemIndicacion) {
         this.itemIndicacion = itemIndicacion;
+    }
+
+    public PacienteEntity getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(PacienteEntity paciente) {
+        this.paciente = paciente;
     }
 }
