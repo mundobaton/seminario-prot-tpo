@@ -214,11 +214,6 @@ public class SistemaIndicaciones {
         JsonObject json = gson.fromJson(request.body(), JsonObject.class);
         String motivo = json.get("motivo").getAsString();
 
-        if (motivo == null || motivo.isEmpty()) {
-            response.status(HttpStatus.BAD_REQUEST_400);
-            return "El motivo de rechazo es requerido";
-        }
-
         try {
             indicacionService.rechazarIndicacion(indicacionId, email, motivo);
             return "";

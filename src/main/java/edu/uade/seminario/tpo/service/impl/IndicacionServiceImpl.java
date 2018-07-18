@@ -150,11 +150,19 @@ public class IndicacionServiceImpl implements IndicacionService {
     @Override
     public void rechazarIndicacion(Long indicacionId, String email, String motivo) throws BusinessException {
         Indicacion indicacion = this.findIndicacion(indicacionId);
-        Usuario farmaceutico = usuarioDao.findByEmailAndRole(email, Rol.FARMACEUTICO);
-        if (farmaceutico == null) {
-            throw new BusinessException("No se encontró el farmaceutico con email '" + email + "'", HttpStatus.NOT_FOUND_404);
+        Usuario enfermero = usuarioDao.findByEmailAndRole(email, Rol.ENFERMERO);
+        if (enfermero == null) {
+            Usuario farmaceutico = usuarioDao.findByEmailAndRole(email, Rol.FARMACEUTICO);
+            if (farmaceutico == null) {
+                throw new BusinessException("No se encontró el farmaceutico con email '" + email + "'", HttpStatus.NOT_FOUND_404);
+            }
+            if (motivo == null || motivo.isEmpty()) {
+                throw new BusinessException("El motivo es requerido", HttpStatus.BAD_REQUEST_400);
+            }
+            indicacion.rechazar(motivo, farmaceutico);
+        } else {
+            indicacion.setEstado(EstadoIndicacion.VALIDADO);
         }
-        indicacion.rechazar(motivo, farmaceutico);
         indicacionDao.save(indicacion);
     }
 }
