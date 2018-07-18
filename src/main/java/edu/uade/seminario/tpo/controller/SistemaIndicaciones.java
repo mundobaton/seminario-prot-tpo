@@ -211,8 +211,11 @@ public class SistemaIndicaciones {
             return "El parámetro email es requerido";
         }
 
+        String motivo = null;
         JsonObject json = gson.fromJson(request.body(), JsonObject.class);
-        String motivo = json.get("motivo").getAsString();
+        if (json != null) {
+            motivo = json.get("motivo") == null ? null : json.get("motivo").getAsString();
+        }
 
         try {
             indicacionService.rechazarIndicacion(indicacionId, email, motivo);
