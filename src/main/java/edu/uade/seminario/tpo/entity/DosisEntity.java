@@ -36,6 +36,9 @@ public class DosisEntity implements Serializable {
     @OneToOne
     @JoinColumn(name = "paciente_id")
     private PacienteEntity paciente;
+    @OneToOne
+    @JoinColumn(name = "medicamento_id")
+    private MedicamentoEntity medicamento;
 
     public Long getId() {
         return id;
@@ -91,5 +94,13 @@ public class DosisEntity implements Serializable {
 
     public void setPaciente(PacienteEntity paciente) {
         this.paciente = paciente;
+    }
+
+    public MedicamentoEntity getMedicamento() {
+        return medicamento;
+    }
+
+    public void setMedicamento(MedicamentoEntity medicamento) {
+        this.medicamento = medicamento;
     }
 }

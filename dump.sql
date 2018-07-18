@@ -29,14 +29,17 @@ CREATE TABLE `dosis` (
   `fecha_aplicacion_prevista` datetime(6) DEFAULT NULL,
   `enfermero_id` bigint(20) DEFAULT NULL,
   `item_indicacion_id` bigint(20) DEFAULT NULL,
+  `medicamento_id` bigint(20) DEFAULT NULL,
   `paciente_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`dosis_id`),
   KEY `FKdrrp2oraac5bd1dh46avlyrql` (`enfermero_id`),
   KEY `FK47x7woktf2sylcq9rgc8wd9ox` (`item_indicacion_id`),
+  KEY `FKoyu4crtqi3n45l1qj63ohmoai` (`medicamento_id`),
   KEY `FKkxm4wb9o5aaquoh2wg9k6kkqr` (`paciente_id`),
   CONSTRAINT `FK47x7woktf2sylcq9rgc8wd9ox` FOREIGN KEY (`item_indicacion_id`) REFERENCES `item_indicaciones` (`item_indicacion_id`),
   CONSTRAINT `FKdrrp2oraac5bd1dh46avlyrql` FOREIGN KEY (`enfermero_id`) REFERENCES `usuarios` (`usuario_id`),
-  CONSTRAINT `FKkxm4wb9o5aaquoh2wg9k6kkqr` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes` (`paciente_id`)
+  CONSTRAINT `FKkxm4wb9o5aaquoh2wg9k6kkqr` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes` (`paciente_id`),
+  CONSTRAINT `FKoyu4crtqi3n45l1qj63ohmoai` FOREIGN KEY (`medicamento_id`) REFERENCES `medicamentos` (`medicamento_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -203,7 +206,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'Fulano',123312,'me@dico.com','A','Agustin','12345',1),(2,'Gomez',31231,'farma@ceutico.com','A','Jose','12345',0),(3,'Perez',123123,'enfer@mero.com','A','Claudia','qwerty',2);
+INSERT INTO `usuarios` VALUES (1,'DeTal',123312,'medico@sanlucas.com','A','Fulano','12345',1),(2,'Gomez',31231,'farmaceutico@sanlucas.com','A','Jose','12345',0),(3,'Perez',123123,'enfermero@sanlucas.com','A','Claudia','12345',2);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -216,4 +219,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-17 20:54:21
+-- Dump completed on 2018-07-18 12:21:05

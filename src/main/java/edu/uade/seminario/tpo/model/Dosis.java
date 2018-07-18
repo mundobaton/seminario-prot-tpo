@@ -11,6 +11,7 @@ public class Dosis {
     private Usuario enfermero;
     private ItemIndicacion itemIndicacion;
     private Paciente paciente;
+    private Medicamento medicamento;
 
     public Dosis() {
 
@@ -20,6 +21,7 @@ public class Dosis {
         this.fechaAplicacionPrevista = fechaPrevista;
         this.itemIndicacion = itemIndicacion;
         this.paciente = itemIndicacion.getIndicacion().getPaciente();
+        this.medicamento = itemIndicacion.getMedicamento();
         this.aplicada = false;
     }
 
@@ -83,5 +85,13 @@ public class Dosis {
 
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
+    }
+
+    public Medicamento getMedicamento() {
+        return medicamento;
+    }
+
+    public void setMedicamento(Medicamento medicamento) {
+        this.medicamento = medicamento;
     }
 }
